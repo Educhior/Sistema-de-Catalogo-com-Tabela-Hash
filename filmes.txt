@@ -1,0 +1,40 @@
+1	Matrix	Ficcao Cientifica	1999
+2	O Poderoso Chefao	Drama	1972
+3	O Cavaleiro Das Trevas	Acao	2008
+4	A Origem	Ficcao Cientifica	2010
+5	Pulp Fiction	Crime	1994
+7	A Lista de Schindler	Biografia	1993
+10	Forrest Gump	Drama	1994
+12	O Rei Leao	Animacao	1994
+15	O Silencio dos Inocentes	Suspense	1991
+20	Psicose	Terror	1960
+22	Laranja Mecanica	Crime	1971
+25	A Viagem de Chihiro	Animacao	2001
+30	Cidadao Kane	Drama	1941
+33	Casablanca	Romance	1942
+42	O Exterminador do Futuro 2	Acao	1991
+50	Apocalypse Now	Guerra	1979
+55	Alien: O Oitavo Passageiro	Terror	1979
+66	O Grande Lebowski	Comedia	1998
+77	Blade Runner: O Cacador de Androides	Ficcao Cientifica	1982
+80	Amelie	Comedia	2001
+88	Cantando na Chuva	Musical	1952
+96	Janela Indiscreta	Misterio	1954
+97	O Senhor dos Aneis: A Sociedade do Anel	Fantasia	2001
+98	Clube da Luta	Drama	1999
+99	Star Wars: O Imperio Contra-Ataca	Ficcao Cientifica	1980
+100	O Fabuloso Destino de Amelie Poulain	Comedia	2001
+101	Toy Story	Animacao	1995
+110	Parasita	Suspense	2019
+121	Whiplash: Em Busca da Perfeicao	Drama	2014
+122	O Labirinto do Fauno	Fantasia	2006
+150	Gladiador	Acao	2000
+194	Um Sonho de Liberdade	Drama	1994
+195	De Volta para o Futuro	Aventura	1985
+196	O Resgate do Soldado Ryan	Guerra	1998
+200	O Iluminado	Terror	1980
+201	A Outra Historia Americana	Drama	1998
+204	O Show de Truman	Comedia	1998
+250	Mad Max: Estrada da Furia	Acao	2015
+300	Interestelar	Ficcao Cientifica	2014
+350	Onde os Fracos Nao Tem Vez	Crime	2007

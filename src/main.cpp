@@ -1,131 +1,172 @@
-#include "include/filme.h"
 #include <iostream>
 #include <limits>
 #include <string.h>
+#include "TabelaHash.h"
+
+#include <cstdlib>
 
 using namespace std;
 
+void limparTela() {
+    #ifdef _WIN32
+        system("cls");
+    #else
+        system("clear");
+    #endif
+}
+
+void exibirMenu() {
+    cout << "\n=======================================" << endl;
+    cout << "      CATALOGO DE FILMES " << endl;
+    cout << "=======================================" << endl;
+    cout << "1. Inserir Filme" << endl;
+    cout << "2. Buscar Filme por ID" << endl;
+    cout << "3. Remover Filme por ID" << endl;
+    cout << "4. Editar Filme por ID" << endl;
+    cout << "5. Listar Todos os Filmes" << endl;
+    cout << "6. Salvar Catalogo em Arquivo" << endl;
+    cout << "7. Carregar Catalogo de Arquivo" << endl;
+    cout << "0. Sair" << endl;
+    cout << "=======================================" << endl;
+    cout << "Escolha uma opcao: ";
+}
+
 int main() {
-    Node* listaFilmes = nullptr;
-    int opcao;
+    TabelaHash* catalogo = criarTabela();
+    int proximoID = 1;
+    int opcao = -1;
 
     do {
-        cout << endl;
-        cout << "=======================================" << endl;
-        cout << "            Menu de Filmes" << endl;
-        cout << "=======================================" << endl;
-        cout << "1. Inserir Filme" << endl;
-        cout << "2. Remover Filme por ID" << endl;
-        cout << "3. Remover Filme por Ano" << endl;
-        cout << "4. Exibir Filmes (Por ano)" << endl;
-        cout << "5. Buscar Filme por ID" << endl;
-        cout << "0. Sair" << endl;
-        cout << "=======================================" << endl;
-        cout << "Escolha uma opcao: ";
+        limparTela();
+        
+        exibirMenu();
 
-        while (!(cin >> opcao)) { 
+        // Bloco de validação de entrada numérica
+        while (!(cin >> opcao)) {
             cout << "Entrada invalida. Por favor, digite um numero: ";
-            cin.clear(); 
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
         }
-        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Limpar o buffer após ler a opção
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
         switch (opcao) {
-            case 1: {
+            case 1: { // Inserir Filme
+                limparTela();
                 Filme novoFilme;
-                cout << "Digite o ID do filme: ";
-                while (!(cin >> novoFilme.ID)) {
-                    cout << "ID invalido. Por favor, digite um numero inteiro: ";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                novoFilme.ID = proximoID;
 
                 cout << "Digite o titulo do filme (max 50 caracteres): ";
                 cin.getline(novoFilme.Titulo, 51);
-                if (strlen(novoFilme.Titulo) == 0) {
-                    cout << "Titulo nao pode ser vazio. Filme nao inserido." << endl;
-                    break;
-                }
 
                 cout << "Digite o genero do filme (max 20 caracteres): ";
                 cin.getline(novoFilme.Genero, 21);
-                if (strlen(novoFilme.Genero) == 0) {
-                    cout << "Genero nao pode ser vazio. Filme nao inserido." << endl;
-                    break;
-                }
 
-                cout << "Digite o ano de lancamento do filme: ";
-                while (!(cin >> novoFilme.AnoLancamento)) {
-                    cout << "Ano invalido. Por favor, digite um numero inteiro: ";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
+                cout << "Digite o ano de lancamento: ";
+                cin >> novoFilme.AnoLancamento;
                 cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
-                inserirFilme(listaFilmes, novoFilme);
+                inserirFilme(catalogo, novoFilme);
+                cout << "Filme cadastrado com ID " << proximoID << "." << endl;
+                proximoID++; 
+
+                cout << "\nPressione Enter para voltar ao menu...";
+                cin.get();
+
                 break;
             }
-            case 2: {
+            case 2: { // Buscar Filme por ID
+                limparTela();
                 int id;
-                if (listaFilmes == nullptr) {
-                    cout << "Lista vazia! Nao ha filmes para remover." << endl;
-                    break;
-                }
-                cout << "Digite o ID do filme a ser removido: ";
-                while (!(cin >> id)) {
-                    cout << "ID invalido. Por favor, digite um numero inteiro: ";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                removerFilmeID(listaFilmes, id);
-                break;
-            }
-            case 3: {
-                int ano;
-                if (listaFilmes == nullptr) {
-                    cout << "Lista vazia! Nao ha filmes para remover." << endl;
-                    break;
-                }
-                cout << "Digite o ano do filme a ser removido: ";
-                while (!(cin >> ano)) {
-                    cout << "Ano invalido. Por favor, digite um numero inteiro: ";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                }
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                removerFilmeAno(listaFilmes, ano);
-                break;
-            }
-            case 4:
-                printFilmes(listaFilmes);
-                break;
-            case 5: {
-                int id;
-                if (listaFilmes == nullptr) {
-                    cout << "Lista vazia! Nao ha filmes para buscar." << endl;
-                    break;
-                }
                 cout << "Digite o ID do filme a ser buscado: ";
-                while (!(cin >> id)) {
-                    cout << "ID invalido. Por favor, digite um numero inteiro: ";
-                    cin.clear();
-                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cin >> id;
+
+                Filme* filmeEncontrado = buscarFilme(catalogo, id);
+
+                if (filmeEncontrado != nullptr) {
+                    cout << "\n--- Filme Encontrado ---\n";
+                    cout << "ID: " << filmeEncontrado->ID << endl;
+                    cout << "Titulo: " << filmeEncontrado->Titulo << endl;
+                    cout << "Genero: " << filmeEncontrado->Genero << endl;
+                    cout << "Ano: " << filmeEncontrado->AnoLancamento << endl;
+                } else {
+                    cout << "Filme com ID " << id << " nao encontrado." << endl;
                 }
-                cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                buscarFilmes(listaFilmes, id);
+
+                cout << "\nPressione Enter para voltar ao menu...";
+                cin.get();
+
                 break;
             }
-            case 0:
-                cout << "Saindo..." << endl;
-                liberarLista(listaFilmes);
-                cout << "Memoria liberada. Programa encerrado." << endl;
+            case 3: { // Remover Filme por ID
+                limparTela();
+                int id;
+                cout << "Digite o ID do filme a ser removido: ";
+                cin >> id;
+                removerFilme(catalogo, id);
                 break;
-            default:
+            }
+            case 4: { // Editar um campo (que não seja a ID)
+                limparTela();
+                int id;
+                cout << "Digite o ID do filme a ser editado: ";
+                cin >> id;
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+                Filme* filmeParaEditar = buscarFilme(catalogo, id);
+                if (filmeParaEditar != nullptr) {
+                    cout << "Editando o filme: '" << filmeParaEditar->Titulo << "'.\n";
+                    cout << "Digite o novo titulo (max 50 caracteres): ";
+                    cin.getline(filmeParaEditar->Titulo, 51);
+                    cout << "Digite o novo genero (max 20 caracteres): ";
+                    cin.getline(filmeParaEditar->Genero, 21);
+                    cout << "Filme atualizado com sucesso!\n";
+                } else {
+                    cout << "Filme com ID " << id << " nao encontrado." << endl;
+                }
+                break;
+            }
+            case 5: { // Listar Todos os Filmes
+                limparTela();
+                listarTodos(catalogo);
+
+                cout << "\nPressione Enter para voltar ao menu...";
+                cin.get();
+                break;
+            }
+            case 6: { // Salvar em Arquivo
+                limparTela();
+                salvarEmArquivo(catalogo, "filmes.txt");
+
+                cout << "\nPressione Enter para voltar ao menu...";
+                cin.get();
+                break;
+            }
+            case 7: { // Carregar de Arquivo
+                limparTela();
+                liberarTabela(catalogo);
+                catalogo = criarTabela();
+                proximoID = 1;
+                carregarDeArquivo(catalogo, "filmes.txt");
+                cout << "Catalogo carregado com sucesso!" << endl;
+
+                cout << "\nPressione Enter para voltar ao menu...";
+                cin.get();
+                break;
+            }
+            case 0: { // Sair
+                cout << "Encerrando o programa..." << endl;
+                liberarTabela(catalogo);
+                break;
+            }
+            default: {
+                limparTela();
                 cout << "Opcao invalida! Tente novamente." << endl;
+                cout << "\nPressione Enter para voltar ao menu...";
+                cin.get();
+                break;
+            }
         }
     } while (opcao != 0);
 
-    return 0; 
+    return 0;
 }
