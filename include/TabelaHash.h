@@ -4,7 +4,7 @@
 // Tabela Hash
 #define TABLE_SIZE 97
 
-// Estrutura que representa o item do catálogo
+// Estrutura do filme
 struct Filme {
     int ID;
     char Titulo[51];
@@ -12,25 +12,25 @@ struct Filme {
     int AnoLancamento;
 };
 
-// Estrutura para o nó da lista encadeada
+// Estrutura do nó da lista encadeada
 struct Node {
     Filme filme;
     Node* next;
 };
 
-// Estrutura que encapsula a Tabela Hash
+// Estrutura da Tabela Hash
 struct TabelaHash {
     Node** vetorDeListas;
     int tamanho;
     int colisoes;
 };
 
-// --- Interface Pública do Módulo ---
+// Funções auxiliares
 TabelaHash* criarTabela();
 void liberarTabela(TabelaHash* tabela);
 void inserirFilme(TabelaHash* tabela, Filme novoFilme);
 void removerFilme(TabelaHash* tabela, int id);
-Filme* buscarFilme(TabelaHash* tabela, int id); // Retorna um ponteiro para o filme, ou nullptr se não achar
+Filme* buscarFilme(TabelaHash* tabela, int id);
 void listarTodos(TabelaHash* tabela);
 void salvarEmArquivo(TabelaHash* tabela, const char* nomeArquivo);
 void carregarDeArquivo(TabelaHash* tabela, const char* nomeArquivo);

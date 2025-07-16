@@ -154,7 +154,7 @@ void listarTodos(TabelaHash* tabela) {
             }
         }
     }
-    cout << "=======================================" << endl;
+    cout << "\n=======================================" << endl;
     cout << "Total de colisoes na tabela: " << tabela->colisoes << std::endl;
 }
 
